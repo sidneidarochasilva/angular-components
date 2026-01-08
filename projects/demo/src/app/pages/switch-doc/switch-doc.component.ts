@@ -43,19 +43,24 @@ export class SwitchDocComponent {
   basicUsageCode = `
 <ui-switch
   [(ngModel)]="isChecked"
-  label="Toggle me">
+  label="Switch básico">
 </ui-switch>
 `.trim();
 
   reactiveFormCode = `
 form = new FormGroup({
-  notifications: new FormControl(false)
+  notifications: new FormControl(false),
+  settings: new FormControl(true),
 });
 
 <form [formGroup]="form">
   <ui-switch
     formControlName="notifications"
-    label="Enable Notifications">
+    label="Habilitar notificações">
+  </ui-switch>
+  <ui-switch
+    formControlName="settings"
+    label="Configurações">
   </ui-switch>
 </form>
 `.trim();
@@ -64,19 +69,19 @@ form = new FormGroup({
 <ui-switch
   [disabled]="true"
   [ngModel]="true"
-  label="Disabled Checked">
+  label="Desabilitado ligado">
 </ui-switch>
 
 <ui-switch
   [disabled]="true"
   [ngModel]="false"
-  label="Disabled Unchecked">
+  label="Desabilitado desligado">
 </ui-switch>
 `.trim();
 
   eventHandlingCode = `
 <ui-switch
-  label="With Event"
+  label="Clique aqui!"
   (change)="handleChange($event)">
 </ui-switch>
 
