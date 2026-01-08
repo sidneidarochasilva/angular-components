@@ -1,63 +1,54 @@
-# Ui
+## TESTE FRONT END
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+### Objetivo
+Criar dois componentes utilizando o Angular, conforme os handoffs fornecidos: Select e Switch.
 
-## Code scaffolding
+### Requisitos Gerais
+- Baixe o arquivo de handoff para visualizar os detalhes do design e comportamento;
+- Utilize o GitHub para desenvolvimento e entrega.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+### Componente Select
+- Deve respeitar o design visual conforme o handoff;
+- O usuário que utilizar o Select deve passar o item para o Select, seguindo esta interface:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+[{ value: "Value", label: "Label" }]
 
-```bash
-ng generate --help
-```
+Onde "value" é o valor do item selecionado;
 
-## Building
+E a "label" será o que vai aparecer visualmente em cada opção do Select;
 
-To build the library, run:
+- O usuário poderá utilizar esse componente via [(ngModel)] e Reactive Forms;
 
-```bash
-ng build ui
-```
+- Deve permitir desabilitar o campo de Select.
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+### Componente Switch
+- Deve respeitar o design visual conforme o handoff;
 
-### Publishing the Library
+- O usuário poderá utilizar esse componente via [(ngModel)] e Reactive Forms (com os valores true ou false);
 
-Once the project is built, you can publish your library by following these steps:
+- O usuário vai poder desabilitar o Switch;
 
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/ui
-   ```
+- O usuário poderá receber um evento informando o valor atual.
 
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
+### Aplicação de Demonstração
+Com os componentes criados, construa uma página (Ex.: GitHub Pages) que possibilite customizar as propriedades para visualizar em tempo real as alterações de funcionamento e estilo dos componentes;
 
-## Running unit tests
+### A interface deve permitir alterar propriedades como:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Lista de opções;
 
-```bash
-ng test
-```
+- Estado selecionado;
 
-## Running end-to-end tests
+- Desabilitado;
 
-For end-to-end (e2e) testing, run:
+Etc.
 
-```bash
-ng e2e
-```
+### Observações finais
+Buscamos avaliar seu domínio técnico em Angular, TypeScript e desenvolvimento de componentes reutilizáveis;
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Evite ou utilize de forma moderada ferramentas de IA na implementação para que possamos avaliar seu conhecimento e estilo de código;
 
-## Additional Resources
+### Antes de enviar o repositório no GitHub, verifique se não há erros no console;
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Diferenciais são bem-vindos.
