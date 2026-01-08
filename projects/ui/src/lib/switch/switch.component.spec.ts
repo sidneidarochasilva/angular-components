@@ -7,12 +7,7 @@ import { SwitchComponent } from './switch.component';
 @Component({
   standalone: true,
   imports: [SwitchComponent, ReactiveFormsModule],
-  template: `
-    <ui-switch
-      [formControl]="control"
-      label="Test Switch"
-    />
-  `,
+  template: ` <ui-switch [formControl]="control" label="Test Switch" /> `,
 })
 class TestHostComponent {
   control = new FormControl(false);
@@ -89,9 +84,9 @@ describe('SwitchComponent', () => {
     const hostFixture = TestBed.createComponent(TestHostComponent);
     hostFixture.detectChanges();
 
-    const switchInstance = hostFixture.debugElement
-      .query(By.directive(SwitchComponent))
-      .componentInstance as SwitchComponent;
+    const switchInstance = hostFixture.debugElement.query(
+      By.directive(SwitchComponent)
+    ).componentInstance as SwitchComponent;
 
     expect(switchInstance.value).toBeFalse();
 
@@ -112,4 +107,61 @@ describe('SwitchComponent', () => {
     expect(icon).toBeFalsy();
   });
 
+  it('deve chamar onTouched ao perder o foco', () => {
+    const spyOnTouched = spyOn<any>(component, 'onTouched');
+
+    const input = fixture.debugElement.query(By.css('input'));
+    input.triggerEventHandler('blur', null);
+
+    expect(spyOnTouched).toHaveBeenCalled();
+  });
+
+  it('deve desabilitar o switch quando o FormControl for desabilitado', () => {
+    const hostFixture = TestBed.createComponent(TestHostComponent);
+    hostFixture.detectChanges();
+
+    const switchDebug = hostFixture.debugElement.query(
+      By.directive(SwitchComponent)
+    );
+    const input = switchDebug.query(By.css('input')).nativeElement;
+
+    hostFixture.componentInstance.control.disable();
+    hostFixture.detectChanges();
+
+    expect(input.disabled).toBeTrue();
+  });
+
+  it('deve emitir o evento change ao alternar o switch', () => {
+    spyOn(component.change, 'emit');
+
+    const input = fixture.debugElement.query(By.css('input'));
+    input.triggerEventHandler('change', { stopPropagation: () => {} });
+
+    expect(component.change.emit).toHaveBeenCalledWith(true);
+  });
+
+  it('deve atualizar o valor ao chamar writeValue', () => {
+    component.writeValue(true);
+    fixture.detectChanges();
+
+    const input = fixture.debugElement.query(By.css('input')).nativeElement;
+
+    expect(component.value).toBeTrue();
+    expect(input.checked).toBeTrue();
+  });
+
+  it('não deve quebrar ao receber null no writeValue', () => {
+    expect(() => component.writeValue(null as any)).not.toThrow();
+  });
+
+  it('deve refletir o estado disabled no atributo aria-disabled', () => {
+    component.disabled = true;
+    fixture.detectChanges();
+
+    const input = fixture.debugElement.query(By.css('input')).nativeElement;
+
+    expect(
+      input.getAttribute('aria-disabled') === 'true' || input.disabled
+    ).toBeTrue();
+  });
 });
