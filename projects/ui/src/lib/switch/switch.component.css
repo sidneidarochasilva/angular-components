@@ -111,8 +111,7 @@
 
 .ui-switch-disabled {
   cursor: not-allowed;
-  opacity: var(--disabled-opacity);
-}
+} 
 
 
 .ui-switch-disabled .ui-switch-input:not(:checked)+.ui-switch-track .ui-switch-key {

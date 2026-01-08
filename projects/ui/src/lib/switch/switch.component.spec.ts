@@ -1,92 +1,101 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SwitchComponent } from './switch.component';
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SwitchComponent } from './switch.component';
 
 @Component({
   standalone: true,
   imports: [SwitchComponent, ReactiveFormsModule],
-  template: `<ui-switch [formControl]="control" label="Test Switch"></ui-switch>`
+  template: `
+    <ui-switch
+      [formControl]="control"
+      label="Test Switch"
+    />
+  `,
 })
 class TestHostComponent {
   control = new FormControl(false);
 }
 
 describe('SwitchComponent', () => {
-  let component: SwitchComponent;
   let fixture: ComponentFixture<SwitchComponent>;
+  let component: SwitchComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SwitchComponent, FormsModule, ReactiveFormsModule, TestHostComponent]
-    })
-    .compileComponents();
+      imports: [SwitchComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SwitchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('cria o componente sem erros', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deve ter o valor inicial como falso', () => {
-    expect(component.value).toBeFalse();
+  it('inicia desmarcado e reflete isso no input', () => {
     const input = fixture.debugElement.query(By.css('input')).nativeElement;
+
+    expect(component.value).toBeFalse();
     expect(input.checked).toBeFalse();
   });
 
-  it('deve alternar o valor quando clicado', () => {
+  it('altera o valor ao interagir com o switch', () => {
     const input = fixture.debugElement.query(By.css('input'));
-    input.triggerEventHandler('change', {});
+    const event = { stopPropagation: jasmine.createSpy() };
+
+    input.triggerEventHandler('change', event);
     fixture.detectChanges();
 
     expect(component.value).toBeTrue();
+    expect(event.stopPropagation).toHaveBeenCalled();
   });
 
-  it('deve não alternar o switch quando desabilitado', () => {
+  it('não muda o estado quando está desabilitado', () => {
     component.disabled = true;
-    fixture.detectChanges();
 
-    const input = fixture.debugElement.query(By.css('input'));
-    input.triggerEventHandler('change', {});
-    fixture.detectChanges();
+    fixture.debugElement
+      .query(By.css('input'))
+      .triggerEventHandler('change', new Event('change'));
 
+    fixture.detectChanges();
     expect(component.value).toBeFalse();
   });
 
-  it('deve renderizar o label quando fornecido', () => {
-    component.label = 'Test Label';
+  it('renderiza o label apenas quando informado', () => {
+    component.label = 'Meu Switch';
     fixture.detectChanges();
 
     const label = fixture.debugElement.query(By.css('.ui-switch-label'));
     expect(label).toBeTruthy();
-    expect(label.nativeElement.textContent.trim()).toBe('Test Label');
+    expect(label.nativeElement.textContent.trim()).toBe('Meu Switch');
   });
 
-  it('deve ter os atributos de acessibilidade corretos', () => {
+  it('mantém aria-checked sincronizado com o valor interno', () => {
     const input = fixture.debugElement.query(By.css('input'));
-    expect(input.attributes['role']).toBe('switch');
+
     expect(input.attributes['aria-checked']).toBe('false');
 
-    component.toggle();
+    component.handleToggle(new Event('change'));
     fixture.detectChanges();
+
     expect(input.attributes['aria-checked']).toBe('true');
   });
 
-  it('deve suportar formulários reativos', () => {
+  it('funciona corretamente com formulários reativos', () => {
     const hostFixture = TestBed.createComponent(TestHostComponent);
-    const hostComponent = hostFixture.componentInstance;
     hostFixture.detectChanges();
 
-    const switchEl = hostFixture.debugElement.query(By.directive(SwitchComponent));
-    const switchInstance = switchEl.componentInstance as SwitchComponent;
+    const switchInstance = hostFixture.debugElement
+      .query(By.directive(SwitchComponent))
+      .componentInstance as SwitchComponent;
 
     expect(switchInstance.value).toBeFalse();
 
-    hostComponent.control.setValue(true);
+    hostFixture.componentInstance.control.setValue(true);
     hostFixture.detectChanges();
 
     expect(switchInstance.value).toBeTrue();

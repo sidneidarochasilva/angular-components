@@ -1,28 +1,22 @@
 <label class="ui-switch" [class.ui-switch-disabled]="disabled" [attr.for]="id">
   <input
-    [id]="id"
     type="checkbox"
     class="ui-switch-input"
+    [id]="id"
     [checked]="value"
     [disabled]="disabled"
     role="switch"
     [attr.aria-checked]="value"
-    (change)="toggle()"
+    (change)="handleToggle($event)"
     (blur)="markAsTouched()"
   />
 
   <span class="ui-switch-track">
     <span class="ui-switch-key">
-      <svg
-        class="ui-switch-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" class="ui-switch-icon" aria-hidden="true">
         <path
-          d="M9 16.2L4.8 12L3.4 13.4L9 19L21 7L19.6 5.6L9 16.2Z"
           fill="currentColor"
+          d="M9 16.2L4.8 12L3.4 13.4L9 19L21 7L19.6 5.6L9 16.2Z"
         />
       </svg>
     </span>

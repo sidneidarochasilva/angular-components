@@ -1,0 +1,214 @@
+<div class="doc-container">
+  <!-- Cabeçalho simples, sem muita cerimônia -->
+  <header class="doc-header">
+    <h1>Componente Switch</h1>
+
+    <p class="doc-subtitle">
+      Switch customizado para Angular. Criado para cobrir os casos mais comuns
+      de formulário, sem tentar reinventar checkbox.
+    </p>
+  </header>
+
+  <section class="doc-section demo-section">
+    <h2>Demonstração interativa</h2>
+
+    <div class="demo-card">
+      <div class="demo-preview">
+        <!-- Mantemos ngModel aqui de propósito por ser mais didático -->
+        <ui-switch
+          [(ngModel)]="demoValue"
+          (change)="onDemoChange($event)"
+          [disabled]="demoDisabled"
+          [label]="demoLabel"
+        >
+        </ui-switch>
+      </div>
+
+      <div class="demo-controls">
+        <h3>Controles</h3>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="demoValue" />
+            Ligado
+          </label>
+
+          <label>
+            <input type="checkbox" [(ngModel)]="demoDisabled" />
+            Desabilitado
+          </label>
+
+          <label class="text-input">
+            Texto do rótulo
+            <input type="text" [(ngModel)]="demoLabel" />
+          </label>
+        </div>
+
+        <div class="current-state">
+          <p>
+            <strong>Valor atual</strong>:
+            {{ demoValue }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A partir daqui os exemplos não seguem uma ordem “perfeita” de propósito -->
+  <section class="doc-section">
+    <h2>Exemplos de uso</h2>
+
+    <div class="example-block">
+      <h3>Uso simples (ngModel)</h3>
+
+      <div class="example-preview">
+        <ui-switch label="Switch Básico" [(ngModel)]="demoValue"> </ui-switch>
+      </div>
+
+      <div class="code-block">
+        <pre>{{ basicUsageCode }}</pre>
+      </div>
+    </div>
+
+    <div class="example-block">
+      <h3>Estados desabilitados</h3>
+
+      <div class="example-preview">
+        <div class="switch-group">
+          <ui-switch
+            [ngModel]="true"
+            [disabled]="true"
+            label="Desabilitado ligado"
+          >
+          </ui-switch>
+
+          <ui-switch
+            [ngModel]="false"
+            [disabled]="true"
+            label="Desabilitado desligado"
+          >
+          </ui-switch>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <pre>{{ disabledCode }}</pre>
+      </div>
+    </div>
+
+    <div class="example-block">
+      <h3>Formulários reativos</h3>
+
+      <div class="example-preview">
+        <form [formGroup]="form">
+          <div class="form-row">
+            <ui-switch
+              label="Habilitar notificações"
+              formControlName="notifications"
+            >
+            </ui-switch>
+
+            <span class="value-display">
+              Valor: {{ form.get("notifications")?.value }}
+            </span>
+          </div>
+
+          <div class="form-row">
+            <ui-switch
+              formControlName="settings"
+              label="Configurações ativadas"
+            >
+            </ui-switch>
+
+            <span class="value-display">
+              Valor: {{ form.get("settings")?.value }}
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <div class="code-block">
+        <pre>{{ reactiveFormCode }}</pre>
+      </div>
+    </div>
+
+    <div class="example-block">
+      <h3>Eventos</h3>
+
+      <div class="example-preview">
+        <ui-switch label="Clique aqui!" (change)="onEventChange($event)">
+        </ui-switch>
+
+        <p class="event-log" *ngIf="lastEventValue !== null">
+          Último valor emitido:
+          <strong>{{ lastEventValue }}</strong>
+        </p>
+      </div>
+
+      <div class="code-block">
+        <pre>{{ eventHandlingCode }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- API propositalmente mais “texto” do que tabela perfeita -->
+  <section class="doc-section">
+    <h2>API</h2>
+
+    <div class="api-table-wrapper">
+      <h3>Inputs</h3>
+
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Padrão</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><code>label</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>
+              Texto exibido ao lado do switch. Opcional — o componente funciona
+              sem ele.
+            </td>
+          </tr>
+
+          <tr>
+            <td><code>disabled</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Quando verdadeiro, bloqueia a interação do usuário.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="api-table-wrapper">
+      <h3>Outputs</h3>
+
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th>Payload</th>
+            <th>Quando dispara</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><code>change</code></td>
+            <td><code>boolean</code></td>
+            <td>Sempre que o usuário alterna o estado do switch.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
