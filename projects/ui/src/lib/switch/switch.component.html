@@ -1,1 +1,23 @@
-<p>switch works!</p>
+<label class="ui-switch" [class.ui-switch-disabled]="disabled" [attr.for]="id">
+  <input
+    [id]="id"
+    type="checkbox"
+    class="ui-switch-input"
+    [checked]="value"
+    [disabled]="disabled"
+    role="switch"
+    [attr.aria-checked]="value"
+    (change)="toggle()"
+    (blur)="markAsTouched()"
+  />
+
+  <span class="ui-switch-track">
+    <span class="ui-switch-key"></span>
+  </span>
+
+  @if (label) {
+  <span class="ui-switch-label">
+    {{ label }}
+  </span>
+  }
+</label>

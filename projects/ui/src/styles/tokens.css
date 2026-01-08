@@ -1,0 +1,32 @@
+:root {
+  /* =========================
+     COLORS – SWITCH
+     ========================= */
+
+  /* Key */
+  --color-unchecked: #ffffff;
+  --color-checked: #0a7cff;
+
+  --color-unchecked-hover: #f0f4f8;
+  --color-checked-hover: #005fcc;
+
+  --color-unchecked-disabled: #e0e0e0;
+  --color-checked-disabled: #9bbce8;
+
+  /* Track */
+  --track-unchecked: #cfd4d9;
+  --track-checked: #0a7cff;
+
+  /* Borders */
+  --border-color: #cfd4d9;
+  --color-checked-disabled-border: #9bbce8;
+
+  /* Focus */
+  --outline-color-focused: #0039a6;
+
+  /* =========================
+     SIZES
+     ========================= */
+  --border-width-md: 2px;
+  --border-width-lg: 3px;
+}

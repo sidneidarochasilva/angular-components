@@ -1,0 +1,113 @@
+.ui-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* INPUT (acessibilidade nativa) */
+.ui-switch-input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* TRACK */
+.ui-switch-track {
+  width: 3rem;           /* 48px */
+  height: 1rem;          /* 16px */
+  background-color: var(--track-unchecked);
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+/* KEY */
+.ui-switch-key {
+  width: 1.5rem;         /* 24px */
+  height: 1.5rem;
+  background-color: var(--color-unchecked);
+  border: var(--border-width-md) solid var(--border-color);
+  border-radius: 100%;
+  position: absolute;
+  top: -0.25rem;
+  left: 0;
+  transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* ─────────────────────────────
+   NORMAL – CHECKED
+───────────────────────────── */
+.ui-switch-input:checked + .ui-switch-track {
+  background-color: var(--track-checked);
+}
+
+.ui-switch-input:checked + .ui-switch-track .ui-switch-key {
+  background-color: var(--color-checked);
+  border-color: transparent;
+  transform: translateX(1.5rem);
+}
+
+/* ─────────────────────────────
+   HOVER – UNCHECKED
+───────────────────────────── */
+.ui-switch:not(.ui-switch-disabled):hover
+  .ui-switch-input:not(:checked)
+  + .ui-switch-track
+  .ui-switch-key {
+  background-color: var(--color-unchecked-hover);
+  border-color: var(--color-checked-hover);
+}
+
+/* ─────────────────────────────
+   HOVER – CHECKED
+───────────────────────────── */
+.ui-switch:not(.ui-switch-disabled):hover
+  .ui-switch-input:checked
+  + .ui-switch-track
+  .ui-switch-key {
+  background-color: var(--color-checked-hover);
+}
+
+/* ─────────────────────────────
+   FOCUS (WCAG AAA)
+───────────────────────────── */
+.ui-switch-input:focus-visible + .ui-switch-track {
+  outline: var(--border-width-lg) solid var(--outline-color-focused);
+  outline-offset: 2px;
+}
+
+/* ─────────────────────────────
+   DISABLED – UNCHECKED
+───────────────────────────── */
+.ui-switch-disabled
+  .ui-switch-input:not(:checked)
+  + .ui-switch-track
+  .ui-switch-key {
+  background-color: var(--color-unchecked-disabled);
+  border-color: var(--color-checked-disabled);
+  cursor: not-allowed;
+}
+
+/* ─────────────────────────────
+   DISABLED – CHECKED
+───────────────────────────── */
+.ui-switch-disabled
+  .ui-switch-input:checked
+  + .ui-switch-track {
+  background-color: var(--track-unchecked);
+}
+
+.ui-switch-disabled
+  .ui-switch-input:checked
+  + .ui-switch-track
+  .ui-switch-key {
+  background-color: var(--color-checked-disabled);
+  cursor: not-allowed;
+}
+
+/* LABEL */
+.ui-switch-label {
+  font-size: 0.875rem;
+  color: #2c2c2c;
+}
