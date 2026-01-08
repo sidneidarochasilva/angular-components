@@ -24,7 +24,7 @@ let nextId = 0;
 })
 export class SwitchComponent implements ControlValueAccessor {
   @Input() disabled: boolean = false;
-  @Input() label: string = 'teste';
+  @Input() label: string = '';
 
   @Output() change = new EventEmitter<boolean>();
 

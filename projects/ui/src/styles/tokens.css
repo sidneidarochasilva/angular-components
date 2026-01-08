@@ -1,32 +1,40 @@
 :root {
-  /* =========================
-     COLORS – SWITCH
-     ========================= */
+
 
   /* Key */
   --color-unchecked: #ffffff;
-  --color-checked: #0a7cff;
+  --color-checked: #6200EE;
 
-  --color-unchecked-hover: #f0f4f8;
-  --color-checked-hover: #005fcc;
+  --color-unchecked-hover: #f0f0f0;
+  --color-checked-hover: #3700B3;
 
-  --color-unchecked-disabled: #e0e0e0;
-  --color-checked-disabled: #9bbce8;
 
-  /* Track */
-  --track-unchecked: #cfd4d9;
-  --track-checked: #0a7cff;
+  --key-disabled: #f5f5f5;
+  --track-disabled: #f0f0f0;
 
-  /* Borders */
-  --border-color: #cfd4d9;
-  --color-checked-disabled-border: #9bbce8;
 
-  /* Focus */
-  --outline-color-focused: #0039a6;
+  --color-unchecked-disabled: var(--key-disabled);
+  --color-checked-disabled: var(--key-disabled);
 
-  /* =========================
-     SIZES
-     ========================= */
+
+  --track-unchecked: #e0e0e0;
+  --track-checked: #dbcbfd;
+
+  --track-checked-hover: #d1c4e9;
+  --track-unchecked-hover: #e0e0e0;
+
+
+  --border-color: #888888;
+  --border-color-hover: #6200EE;
+
+
+  /*  --outline-color-focused: #6200EE; */
+  --outline-color-focused: #000000;
+
+
   --border-width-md: 2px;
-  --border-width-lg: 3px;
+  --border-width-lg: 2px;
+
+
+  --disabled-opacity: 0.5;
 }

@@ -6,25 +6,28 @@
   user-select: none;
 }
 
-/* INPUT (acessibilidade nativa) */
+
 .ui-switch-input {
   position: absolute;
   opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
 }
 
-/* TRACK */
+
 .ui-switch-track {
-  width: 3rem;           /* 48px */
-  height: 1rem;          /* 16px */
+  width: 3rem;
+  height: 1rem;
   background-color: var(--track-unchecked);
   border-radius: 999px;
   position: relative;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 /* KEY */
 .ui-switch-key {
-  width: 1.5rem;         /* 24px */
+  width: 1.5rem;
   height: 1.5rem;
   background-color: var(--color-unchecked);
   border: var(--border-width-md) solid var(--border-color);
@@ -32,82 +35,113 @@
   position: absolute;
   top: -0.25rem;
   left: 0;
-  transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  box-sizing: border-box;
 }
 
-/* ─────────────────────────────
-   NORMAL – CHECKED
-───────────────────────────── */
-.ui-switch-input:checked + .ui-switch-track {
+
+.ui-switch-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-unchecked);
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+
+.ui-switch-input:checked+.ui-switch-track {
   background-color: var(--track-checked);
 }
 
-.ui-switch-input:checked + .ui-switch-track .ui-switch-key {
+.ui-switch-input:checked+.ui-switch-track .ui-switch-key {
   background-color: var(--color-checked);
   border-color: transparent;
   transform: translateX(1.5rem);
 }
 
-/* ─────────────────────────────
-   HOVER – UNCHECKED
-───────────────────────────── */
-.ui-switch:not(.ui-switch-disabled):hover
-  .ui-switch-input:not(:checked)
-  + .ui-switch-track
-  .ui-switch-key {
-  background-color: var(--color-unchecked-hover);
-  border-color: var(--color-checked-hover);
+.ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-icon {
+  opacity: 1;
+  color: var(--color-unchecked);
 }
 
-/* ─────────────────────────────
-   HOVER – CHECKED
-───────────────────────────── */
-.ui-switch:not(.ui-switch-disabled):hover
-  .ui-switch-input:checked
-  + .ui-switch-track
-  .ui-switch-key {
+
+.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:not(:checked)+.ui-switch-track {
+  background-color: var(--track-unchecked-hover);
+  border-color: var(--border-color-hover);
+}
+
+.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:not(:checked)+.ui-switch-track .ui-switch-key {
+  background-color: var(--color-unchecked-hover);
+  border-color: var(--border-color-hover);
+}
+
+
+.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:checked+.ui-switch-track {
+  background-color: var(--track-checked-hover);
+}
+
+.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:checked+.ui-switch-track .ui-switch-key {
   background-color: var(--color-checked-hover);
 }
+
 
 /* ─────────────────────────────
    FOCUS (WCAG AAA)
 ───────────────────────────── */
-.ui-switch-input:focus-visible + .ui-switch-track {
-  outline: var(--border-width-lg) solid var(--outline-color-focused);
-  outline-offset: 2px;
+.ui-switch-input:focus-visible+.ui-switch-track {
+  outline: none;
 }
 
-/* ─────────────────────────────
-   DISABLED – UNCHECKED
-───────────────────────────── */
-.ui-switch-disabled
-  .ui-switch-input:not(:checked)
-  + .ui-switch-track
-  .ui-switch-key {
-  background-color: var(--color-unchecked-disabled);
-  border-color: var(--color-checked-disabled);
+.ui-switch-input:focus-visible+.ui-switch-track::after {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.25rem;
+  right: -0.25rem;
+  border: var(--border-width-lg) solid var(--outline-color-focused);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.ui-switch-disabled {
   cursor: not-allowed;
+  opacity: var(--disabled-opacity);
 }
 
-/* ─────────────────────────────
-   DISABLED – CHECKED
-───────────────────────────── */
-.ui-switch-disabled
-  .ui-switch-input:checked
-  + .ui-switch-track {
-  background-color: var(--track-unchecked);
+
+.ui-switch-disabled .ui-switch-input:not(:checked)+.ui-switch-track .ui-switch-key {
+  background-color: var(--key-disabled);
+  border-color: var(--border-color);
 }
 
-.ui-switch-disabled
-  .ui-switch-input:checked
-  + .ui-switch-track
-  .ui-switch-key {
-  background-color: var(--color-checked-disabled);
-  cursor: not-allowed;
+
+.ui-switch-disabled .ui-switch-input:not(:checked)+.ui-switch-track {
+  background-color: var(--track-disabled);
 }
 
-/* LABEL */
+
+.ui-switch-disabled .ui-switch-input:checked+.ui-switch-track {
+  background-color: var(--track-disabled);
+}
+
+
+.ui-switch-disabled .ui-switch-input:checked+.ui-switch-track .ui-switch-key {
+  background-color: var(--key-disabled);
+}
+
+.ui-switch-disabled .ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-icon {
+  color: var(--track-unchecked);
+}
+
+
 .ui-switch-label {
   font-size: 0.875rem;
   color: #2c2c2c;
+  cursor: inherit;
 }
