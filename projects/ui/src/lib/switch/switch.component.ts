@@ -29,6 +29,7 @@ let switchIdCounter = 0;
 export class SwitchComponent implements ControlValueAccessor {
   @Input() disabled = false;
   @Input() label = '';
+  @Input() loading? = false;
 
   /**
    * Evento emitido sempre que o valor é alterado

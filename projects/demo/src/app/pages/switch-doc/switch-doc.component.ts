@@ -19,6 +19,7 @@ export class SwitchDocComponent {
   // valores usados só nos exemplos visuais da doc
   demoValue = false;
   demoDisabled = false;
+  demoLoading = false;
   demoLabel = 'Rótulo do Switch';
 
   // exemplo simples de reactive forms

@@ -1,5 +1,5 @@
 <div class="doc-container">
-  <!-- Cabeçalho simples, sem muita cerimônia -->
+  <!-- Cabeçalho  -->
   <header class="doc-header">
     <h1>Componente Switch</h1>
 
@@ -14,11 +14,11 @@
 
     <div class="demo-card">
       <div class="demo-preview">
-        <!-- Mantemos ngModel aqui de propósito por ser mais didático -->
         <ui-switch
           [(ngModel)]="demoValue"
           (change)="onDemoChange($event)"
           [disabled]="demoDisabled"
+          [loading]="demoLoading"
           [label]="demoLabel"
         >
         </ui-switch>
@@ -38,6 +38,11 @@
             Desabilitado
           </label>
 
+          <label>
+            <input type="checkbox" [(ngModel)]="demoLoading" />
+            Carregando
+          </label>
+
           <label class="text-input">
             Texto do rótulo
             <input type="text" [(ngModel)]="demoLabel" />
@@ -54,7 +59,6 @@
     </div>
   </section>
 
-  <!-- A partir daqui os exemplos não seguem uma ordem “perfeita” de propósito -->
   <section class="doc-section">
     <h2>Exemplos de uso</h2>
 
@@ -77,15 +81,15 @@
         <div class="switch-group">
           <ui-switch
             [ngModel]="true"
-            [disabled]="true"
             label="Desabilitado ligado"
+            [disabled]="true"
           >
           </ui-switch>
 
           <ui-switch
             [ngModel]="false"
-            [disabled]="true"
             label="Desabilitado desligado"
+            [disabled]="true"
           >
           </ui-switch>
         </div>
@@ -93,6 +97,35 @@
 
       <div class="code-block">
         <pre>{{ disabledCode }}</pre>
+      </div>
+    </div>
+
+    <div class="example-block">
+      <h3>Estado de Carregamento</h3>
+
+      <div class="example-preview">
+        <div class="switch-group">
+          <ui-switch
+            label="Carregando ligado"
+            [loading]="true"
+            [ngModel]="true"
+          >
+          </ui-switch>
+
+          <ui-switch
+            label="Carregando desligado"
+            [loading]="true"
+            [ngModel]="false"
+          >
+          </ui-switch>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <pre>
+&lt;ui-switch [loading]="true" [ngModel]="true" label="Carregando ligado"&gt;&lt;/ui-switch&gt;
+&lt;ui-switch [loading]="true" [ngModel]="false" label="Carregando desligado"&gt;&lt;/ui-switch&gt;
+        </pre>
       </div>
     </div>
 
@@ -151,7 +184,7 @@
     </div>
   </section>
 
-  <!-- API propositalmente mais “texto” do que tabela perfeita -->
+  <!-- API -->
   <section class="doc-section">
     <h2>API</h2>
 
@@ -184,6 +217,13 @@
             <td><code>boolean</code></td>
             <td><code>false</code></td>
             <td>Quando verdadeiro, bloqueia a interação do usuário.</td>
+          </tr>
+
+          <tr>
+            <td><code>loading</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Quando verdadeiro, exibe um spinner.</td>
           </tr>
         </tbody>
       </table>

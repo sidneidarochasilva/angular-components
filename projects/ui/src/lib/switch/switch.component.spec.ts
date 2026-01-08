@@ -59,7 +59,7 @@ describe('SwitchComponent', () => {
 
     fixture.debugElement
       .query(By.css('input'))
-      .triggerEventHandler('change', new Event('change'));
+      .triggerEventHandler('change', { stopPropagation: jasmine.createSpy() });
 
     fixture.detectChanges();
     expect(component.value).toBeFalse();
@@ -100,4 +100,16 @@ describe('SwitchComponent', () => {
 
     expect(switchInstance.value).toBeTrue();
   });
+
+  it('deve exibir spinner quando loading for true', () => {
+    component.loading = true;
+    fixture.detectChanges();
+
+    const spinner = fixture.debugElement.query(By.css('.ui-switch-spinner'));
+    const icon = fixture.debugElement.query(By.css('.ui-switch-icon'));
+
+    expect(spinner).toBeTruthy();
+    expect(icon).toBeFalsy();
+  });
+
 });
