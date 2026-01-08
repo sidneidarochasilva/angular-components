@@ -1,7 +1,24 @@
+:host {
+
+  --switch-track-unchecked: var(--primitive-neutral-200);
+  --switch-track-unchecked-hover: var(--primitive-neutral-200);
+
+
+  --switch-track-checked: var(--primitive-purple-200);
+  --switch-track-checked-hover: var(--primitive-purple-300);
+
+  --switch-key-bg: var(--primitive-neutral-000);
+  --switch-key-border: var(--border-default);
+
+  --switch-icon-unchecked: var(--primitive-neutral-000);
+  --switch-icon-checked: var(--primitive-neutral-000);
+
+}
+
 .ui-switch {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   cursor: pointer;
   user-select: none;
 }
@@ -17,7 +34,7 @@
 .ui-switch-track {
   width: 3rem;
   height: 1rem;
-  background-color: var(--track-unchecked);
+  background-color: var(--switch-track-unchecked);
   border-radius: 999px;
   position: relative;
   transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -27,8 +44,8 @@
 .ui-switch-key {
   width: 1.5rem;
   height: 1.5rem;
-  background-color: var(--color-unchecked);
-  border: var(--border-width-md) solid var(--border-color);
+  background-color: var(--switch-key-bg);
+  border: var(--border-width-md) solid var(--switch-key-border);
   border-radius: 100%;
   position: absolute;
   top: -0.25rem;
@@ -45,7 +62,7 @@
 .ui-switch-icon {
   width: 1rem;
   height: 1rem;
-  color: var(--color-unchecked);
+  color: var(--switch-icon-unchecked);
   opacity: 0;
   transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
@@ -54,7 +71,7 @@
 .ui-switch-spinner {
   width: 1rem;
   height: 1rem;
-  color: var(--color-checked); /* Use checked color for spinner usually, or grey */
+  color: var(--action-primary-enabled);
   animation: spin 1s linear infinite;
 }
 
@@ -65,96 +82,67 @@
 }
 
 .ui-switch-input:checked+.ui-switch-track {
-  background-color: var(--track-checked);
+  background-color: var(--switch-track-checked);
 }
 
 .ui-switch-input:checked+.ui-switch-track .ui-switch-key {
-  background-color: var(--color-checked);
+  background-color: var(--action-primary-enabled);
   border-color: transparent;
   transform: translateX(1.5rem);
 }
 
 .ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-icon {
   opacity: 1;
-  color: var(--color-unchecked);
+  color: var(--switch-icon-checked);
 }
 
 /* Spinner color when checked */
 .ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-spinner {
-  color: var(--color-unchecked); /* White spinner on blue background */
+  color: var(--text-on-brand);
 }
 
 
 .ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:not(:checked)+.ui-switch-track {
-  background-color: var(--track-unchecked-hover);
-  border-color: var(--border-color-hover);
+  background-color: var(--switch-track-unchecked-hover);
+  border-color: var(--border-hover);
 }
 
 .ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:not(:checked)+.ui-switch-track .ui-switch-key {
-  background-color: var(--color-unchecked-hover);
-  border-color: var(--border-color-hover);
+  background-color: var(--primitive-neutral-100);
+  /* Slightly darker on hover */
+  border-color: var(--border-hover);
 }
 
 
 .ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:checked+.ui-switch-track {
-  background-color: var(--track-checked-hover);
+  background-color: var(--switch-track-checked-hover);
 }
 
-.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:checked+.ui-switch-track .ui-switch-key {
-  background-color: var(--color-checked-hover);
-}
-
-
-/* ─────────────────────────────
-   FOCUS (WCAG AAA)
-───────────────────────────── */
+/* Focus State for Switch (Accessibility) */
 .ui-switch-input:focus-visible+.ui-switch-track {
   outline: none;
+  box-shadow: none;
 }
 
+/* Cria o anel de foco quadrado e separado ao redor do track redondo */
 .ui-switch-input:focus-visible+.ui-switch-track::after {
   content: '';
   position: absolute;
-  top: -0.5rem;
-  bottom: -0.5rem;
-  left: -0.25rem;
-  right: -0.25rem;
-  border: var(--border-width-lg) solid var(--outline-color-focused);
+  /* Ajuste para criar gap ao redor do track de 1rem de altura */
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid var(--focus-ring-color);
+  border-radius: 0; /* Força quadrado */
   pointer-events: none;
-  box-sizing: border-box;
-}
-
-.ui-switch-disabled {
-  cursor: not-allowed;
-  /* opacity: var(--disabled-opacity); Removed to improve visibility */
-}
-
-
-.ui-switch-disabled .ui-switch-input:not(:checked)+.ui-switch-track .ui-switch-key {
-  background-color: var(--key-disabled);
-  border-color: var(--border-color);
-}
-
-
-.ui-switch-disabled .ui-switch-input:not(:checked)+.ui-switch-track {
-  background-color: var(--track-disabled);
-}
-
-
-.ui-switch-disabled .ui-switch-input:checked+.ui-switch-track {
-  background-color: var(--track-disabled);
-}
-
-
-.ui-switch-disabled .ui-switch-input:checked+.ui-switch-track .ui-switch-key {
-  background-color: var(--key-disabled);
-}
-
-.ui-switch-disabled .ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-icon {
-  color: var(--track-unchecked);
 }
 
 /* Loading State */
+.ui-switch-loading {
+  cursor: wait;
+}
+
 .ui-switch-loading .ui-switch-input {
   pointer-events: none;
 }
