@@ -69,14 +69,14 @@
 .control-group {
   display: flex;
   gap: 1.5rem;
-  align-items: center;
+  align-items: end;
   flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
 .control-group label {
   display: flex;
-  align-items: center;
+  align-items: end;
   gap: 0.5rem;
   cursor: pointer;
 }
