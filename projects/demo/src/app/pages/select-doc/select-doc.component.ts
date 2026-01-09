@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -12,7 +13,7 @@ import { SelectComponent, SelectOption } from 'ui';
 @Component({
   selector: 'app-select-doc',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SelectComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, SelectComponent],
   templateUrl: './select-doc.component.html',
   styleUrls: ['./select-doc.component.css'],
 })

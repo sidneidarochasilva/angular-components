@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -11,7 +12,7 @@ import { SwitchComponent } from 'ui';
 @Component({
   selector: 'app-switch-doc',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SwitchComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, SwitchComponent],
   templateUrl: './switch-doc.component.html',
   styleUrls: ['./switch-doc.component.css'],
 })
