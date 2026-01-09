@@ -33,7 +33,7 @@ jobs:
 
       # Executa os testes da lib
       - name: Rodar testes
-        run: npx ng test ui --watch=false --browsers=ChromeHeadless
+        run: npx ng test ui --watch=false --browsers=ChromeHeadlessNoSandbox
 
       # Gera o build da demo para o GitHub Pages
       - name: Build da demo
