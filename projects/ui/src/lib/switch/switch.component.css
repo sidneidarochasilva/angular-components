@@ -1,8 +1,6 @@
 :host {
-
   --switch-track-unchecked: var(--primitive-neutral-200);
   --switch-track-unchecked-hover: var(--primitive-neutral-200);
-
 
   --switch-track-checked: var(--primitive-purple-200);
   --switch-track-checked-hover: var(--primitive-purple-300);
@@ -12,24 +10,35 @@
 
   --switch-icon-unchecked: var(--primitive-neutral-000);
   --switch-icon-checked: var(--primitive-neutral-000);
-
 }
+
+
+/* Container */
 
 .ui-switch {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  cursor: pointer;
   user-select: none;
 }
 
+
+/*    Button */
+
 .ui-switch-input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  margin: 0;
+  all: unset;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
+
+.ui-switch-input:disabled {
+  cursor: not-allowed;
+}
+
+
+/* Track */
 
 .ui-switch-track {
   width: 3rem;
@@ -37,37 +46,44 @@
   background-color: var(--switch-track-unchecked);
   border-radius: 999px;
   position: relative;
-  transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* KEY */
+
+/* Key */
+
 .ui-switch-key {
   width: 1.5rem;
   height: 1.5rem;
   background-color: var(--switch-key-bg);
   border: var(--border-width-md) solid var(--switch-key-border);
-  border-radius: 100%;
+  border-radius: 50%;
   position: absolute;
   top: -0.25rem;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
-    transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
-    border-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
   box-sizing: border-box;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+
+/*   Icon */
 
 .ui-switch-icon {
   width: 1rem;
   height: 1rem;
   color: var(--switch-icon-unchecked);
   opacity: 0;
-  transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
-/* SPINNER */
+/* Spinner */
+
 .ui-switch-spinner {
   width: 1rem;
   height: 1rem;
@@ -81,68 +97,123 @@
   }
 }
 
-.ui-switch-input:checked+.ui-switch-track {
+
+/* CHECKED STATE */
+
+.ui-switch-input[aria-checked='true'] .ui-switch-track {
   background-color: var(--switch-track-checked);
 }
 
-.ui-switch-input:checked+.ui-switch-track .ui-switch-key {
+.ui-switch-input[aria-checked='true'] .ui-switch-key {
+  transform: translateX(1.5rem);
   background-color: var(--action-primary-enabled);
   border-color: transparent;
-  transform: translateX(1.5rem);
 }
 
-.ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-icon {
+.ui-switch-input[aria-checked='true'] .ui-switch-icon {
   opacity: 1;
   color: var(--switch-icon-checked);
 }
 
-/* Spinner color when checked */
-.ui-switch-input:checked+.ui-switch-track .ui-switch-key .ui-switch-spinner {
+.ui-switch-input[aria-checked='true'] .ui-switch-spinner {
   color: var(--text-on-brand);
 }
 
 
-.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:not(:checked)+.ui-switch-track {
+/*  Hover */
+
+.ui-switch:not(.ui-switch-disabled) .ui-switch-input:hover .ui-switch-track {
   background-color: var(--switch-track-unchecked-hover);
+}
+
+.ui-switch:not(.ui-switch-disabled) .ui-switch-input:hover .ui-switch-key {
   border-color: var(--border-hover);
 }
 
-.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:not(:checked)+.ui-switch-track .ui-switch-key {
-  background-color: var(--primitive-neutral-100);
-  /* Slightly darker on hover */
-  border-color: var(--border-hover);
-}
-
-
-.ui-switch:not(.ui-switch-disabled):hover .ui-switch-input:checked+.ui-switch-track {
+/* Hover + checked */
+.ui-switch:not(.ui-switch-disabled) .ui-switch-input[aria-checked='true']:hover .ui-switch-track {
   background-color: var(--switch-track-checked-hover);
 }
 
-/* Focus State for Switch (Accessibility) */
-.ui-switch-input:focus-visible+.ui-switch-track {
-  outline: none;
-  box-shadow: none;
-}
 
-/* Cria o anel de foco quadrado e separado ao redor do track redondo */
-.ui-switch-input:focus-visible+.ui-switch-track::after {
+/* Focus (A11y) */
+
+.ui-switch-input:focus-visible .ui-switch-track::after {
   content: '';
   position: absolute;
-  /* Ajuste para criar gap ao redor do track de 1rem de altura */
-  top: -6px;
-  left: -6px;
-  right: -6px;
-  bottom: -6px;
-  border: 2px solid var(--focus-ring-color);
-  border-radius: 0; /* Força quadrado */
+  top: -0.375rem;
+  left: -0.375rem;
+  right: -0.375rem;
+  bottom: -0.375rem;
+  border: 0.125rem solid var(--focus-ring-color);
   pointer-events: none;
 }
 
-/* Loading State */
+
+/* Loading */
+
 .ui-switch-loading {
   cursor: wait;
 }
 
 .ui-switch-loading .ui-switch-input {
   pointer-events: none;
+}
+
+
+/* Disabled */
+
+.ui-switch-disabled {
+  cursor: not-allowed;
+}
+
+.ui-switch-disabled .ui-switch-input {
+  pointer-events: none;
+}
+
+.ui-switch-disabled .ui-switch-track {
+  background-color: var(--primitive-neutral-200);
+}
+
+.ui-switch-disabled .ui-switch-key {
+  background-color: var(--primitive-neutral-100);
+  border-color: var(--primitive-neutral-300);
+}
+
+.ui-switch-disabled .ui-switch-icon {
+  color: var(--primitive-neutral-400);
+}
+
+
+/*  Label */
+
+.ui-switch-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+.ui-switch-disabled .ui-switch-label {
+  color: var(--text-disabled);
+}
+
+
+
+
+/* Disabled + Checked  */
+.ui-switch-disabled .ui-switch-input[aria-checked='true'] .ui-switch-track {
+  background-color: var(--primitive-neutral-200);
+}
+
+.ui-switch-disabled .ui-switch-input[aria-checked='true'] .ui-switch-key {
+  background-color: var(--primitive-neutral-300);
+  border-color: var(--primitive-neutral-300);
+}
+
+.ui-switch-disabled .ui-switch-input[aria-checked='true'] .ui-switch-icon {
+  opacity: 1;
+  color: var(--primitive-neutral-000);
+}
+
+.ui-switch-disabled .ui-switch-input[aria-checked='true'] .ui-switch-spinner {
+  color: var(--primitive-neutral-000);
 }

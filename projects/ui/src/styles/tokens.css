@@ -8,6 +8,8 @@
   --primitive-purple-200: #DBCBFD;
   --primitive-purple-300: #D1C4E9;
 
+  --primitive-red-500: #B00020;
+
 
   --primitive-neutral-000: #FFFFFF;
   --primitive-neutral-100: #F5F5F5;
@@ -45,9 +47,13 @@
   /* bordas */
   --border-default: var(--primitive-neutral-500);
   --border-hover: var(--action-primary-enabled);
-  --border-focus: var(--action-primary-enabled);
+  --border-focus:   var(--action-primary-enabled);
+  --border-error:   var(--primitive-red-500);
   --border-width-sm: 1px;
   --border-width-md: 2px;
+
+  /* Opacity */
+  --opacity-disabled: 0.5;
 
   /* foco (a11y) */
   --focus-ring-color: #000;

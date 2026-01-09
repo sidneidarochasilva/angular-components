@@ -16,7 +16,7 @@ import { SwitchComponent } from 'ui';
   styleUrls: ['./switch-doc.component.css'],
 })
 export class SwitchDocComponent {
-  // valores usados só nos exemplos visuais da doc
+
   demoValue = false;
   demoDisabled = false;
   demoLoading = false;

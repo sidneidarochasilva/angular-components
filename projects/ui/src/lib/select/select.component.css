@@ -18,115 +18,101 @@
 }
 
 .ui-select-box {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--select-padding-y) var(--space-2);
   background-color: var(--bg-default);
   border: var(--border-width-md) solid var(--border-default);
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 0.25rem;
   transition: all 0.2s ease;
   min-height: 2.5rem;
   box-sizing: border-box;
 }
 
-/* Estado Hover */
+/* Select Estilizado */
+.ui-select-native {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  height: 100%;
+  padding: var(--select-padding-y) var(--space-2);
+  padding-right: 2.5rem;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  margin: 0;
+}
+
+/* Fallback para cor do placeholder quando valor é vazio */
+select:not(:valid) {
+  color: var(--text-placeholder);
+}
+
+/* Ícone */
+.ui-select-icon {
+  position: absolute;
+  right: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--text-primary);
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+/* Hover */
 .ui-select-box:hover:not(.ui-select-disabled) {
   border-color: var(--border-hover);
 }
 
-.ui-select-box:hover .ui-select-value {
-  color: var(--action-primary-hover);
-}
-
-/* Estado Focus (Acessibilidade) */
-.ui-select-box:focus {
-  outline: none;
-  /* Borda interna colorida */
+/* Focus State */
+.ui-select-box:focus-within {
   border-color: var(--border-focus);
-  /* Remove box-shadow antigo pois usaremos o ::after para o foco externo */
-  box-shadow: none;
 }
 
-/* Cria o anel de foco quadrado e separado */
-.ui-select-box:focus::after {
+/* Focus Externo */
+.ui-select-box:focus-within::after {
   content: '';
   position: absolute;
-  /* Expande para cobrir a borda do pai e criar o gap */
-  top: -6px;
-  left: -6px;
-  right: -6px;
-  bottom: -6px;
-  /* Desenha a borda externa */
-  border: 2px solid var(--focus-ring-color);
-  /* Força cantos quadrados */
+  top: -0.375rem;
+  left: -0.375rem;
+  right: -0.375rem;
+  bottom: -0.375rem;
+  border: 0.125rem solid var(--focus-ring-color);
   border-radius: 0;
-  /* Gap transparente (o espaço entre o componente e esta borda) */
   pointer-events: none;
 }
 
-.ui-select-value {
-  color: var(--text-primary);
-  font-size: var(--font-size-md);
+/* Estado de Erro */
+.ui-select-error {
+  border-color: var(--border-error);
 }
 
-.ui-select-placeholder {
-  color: var(--text-placeholder);
-}
-
-.ui-select-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--text-primary);
-  transition: transform 0.2s ease;
-}
-
-/* Lista de Opções (Dropdown) */
-.ui-select-options {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  z-index: 100;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  background: var(--bg-paper);
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-height: 250px;
-  overflow-y: auto;
-}
-
-.ui-select-option {
-  padding: var(--select-padding-y) var(--space-2);
-  color: var(--text-primary);
-  cursor: pointer;
-}
-
-.ui-select-option:hover,
-.ui-select-option-focused {
-  background-color: var(--action-primary-subtle);
-  color: var(--text-brand);
-}
-
-.ui-select-option-selected {
-  background-color: var(--action-primary-subtle);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-brand);
+.ui-select-error:hover:not(.ui-select-disabled),
+.ui-select-error:focus-within {
+  border-color: var(--border-error);
 }
 
 /* Estado Desabilitado */
+.ui-select-disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
 .ui-select-disabled .ui-select-box {
   background-color: var(--bg-disabled);
   border-color: var(--action-disabled);
-  cursor: not-allowed;
 }
 
-.ui-select-disabled .ui-select-value,
-.ui-select-disabled .ui-select-icon,
-.ui-select-disabled .ui-select-label {
+.ui-select-disabled .ui-select-native {
+  cursor: not-allowed;
+  color: var(--text-disabled);
+}
+
+.ui-select-disabled .ui-select-icon {
   color: var(--text-disabled);
 }

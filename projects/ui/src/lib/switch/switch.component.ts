@@ -46,7 +46,7 @@ export class SwitchComponent implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   writeValue(value: boolean): void {
-    this.value = value;
+    this.value = !!value;
   }
 
   registerOnChange(fn: (value: boolean) => void): void {

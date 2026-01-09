@@ -1,58 +1,42 @@
 <div class="ui-select-container" [class.ui-select-disabled]="disabled">
   @if (label) {
-  <label [attr.for]="id" class="ui-select-label">{{ label }}</label>
+  <label class="ui-select-label" [id]="id + '-label'" [attr.for]="id">
+    {{ label }}
+  </label>
   }
 
-  <div
-    [id]="id"
-    class="ui-select-box"
-    [class.ui-select-open]="isOpen"
-    (click)="toggleDropdown()"
-    tabindex="0"
-    role="combobox"
-    aria-haspopup="listbox"
-    [attr.aria-expanded]="isOpen"
-    [attr.aria-activedescendant]="isOpen && focusedIndex >= 0 ? id + '-option-' + focusedIndex : null"
-    [attr.aria-controls]="isOpen ? id + '-listbox' : null"
-    [attr.aria-labelledby]="label ? null : id + '-label'"
-  >
-    <span
-      class="ui-select-value"
-      [class.ui-select-placeholder]="!selectedLabel"
+  <div class="ui-select-box" [class.ui-select-error]="error">
+    <select
+      class="ui-select-native"
+      [id]="id"
+      [disabled]="disabled"
+      [attr.aria-invalid]="error"
+      [attr.aria-labelledby]="label ? id + '-label' : null"
+      (change)="onSelectChange($event)"
+      (blur)="markAsTouched()"
     >
-      {{ selectedLabel || placeholder }}
-    </span>
+      <!-- Opção de placeholder (selecionada se valor for vazio) -->
+      <option value="" disabled [selected]="!value">
+        {{ placeholder }}
+      </option>
 
-    <svg
-      class="ui-select-icon"
-      [style.transform]="isOpen ? 'rotate(180deg)' : 'none'"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+      @for (opt of options; track opt.value) {
+      <option
+        [value]="opt.value"
+        [disabled]="opt.disabled"
+        [selected]="opt.value === value"
+      >
+        {{ opt.label }}
+      </option>
+      }
+    </select>
+
+    <!-- Ícone chevron -->
+    <svg class="ui-select-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+      />
     </svg>
   </div>
-
-  @if (isOpen && !disabled) {
-  <ul
-    class="ui-select-options"
-    role="listbox"
-    [id]="id + '-listbox'"
-    tabindex="-1"
-  >
-    @for (option of options; track option.value; let i = $index) {
-    <li
-      class="ui-select-option"
-      [class.ui-select-option-selected]="option.value === value"
-      [class.ui-select-option-focused]="i === focusedIndex"
-      (click)="selectOption(option)"
-      role="option"
-      [id]="id + '-option-' + i"
-      [attr.aria-selected]="option.value === value"
-    >
-      {{ option.label }}
-    </li>
-    }
-  </ul>
-  }
 </div>

@@ -1,6 +1,189 @@
-<ui-select
-  [formControl]="control"
-  [options]="options"
-  label="Select"
-  placeholder="Select an option"
-></ui-select>
+<div class="doc-container">
+  <header class="doc-header">
+    <h1>Componente Select</h1>
+    <p class="doc-subtitle">
+      Componente de seleção dropdown customizável, acessível e compatível com
+      formulários do Angular.
+    </p>
+  </header>
+
+  <!-- Demonstração Interativa -->
+  <section class="doc-section demo-section">
+    <h2>Demonstração Interativa</h2>
+
+    <div class="demo-card">
+      <div class="demo-preview">
+        <ui-select
+          class="form-example"
+          [(ngModel)]="demoValue"
+          (change)="onDemoChange($event)"
+          [options]="demoOptions"
+          [label]="demoLabel"
+          [placeholder]="demoPlaceholder"
+          [disabled]="demoDisabled"
+          [error]="demoError"
+        >
+        </ui-select>
+      </div>
+
+      <div class="demo-controls">
+        <h3>Controles</h3>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="demoDisabled" />
+            Desabilitado
+          </label>
+
+          <label>
+            <input type="checkbox" [(ngModel)]="demoError" />
+            Estado de Erro
+          </label>
+
+          <label class="text-input">
+            Label
+            <input type="text" [(ngModel)]="demoLabel" />
+          </label>
+
+          <label class="text-input">
+            Placeholder
+            <input type="text" [(ngModel)]="demoPlaceholder" />
+          </label>
+        </div>
+
+     <!--    <div class="control-group">
+          <h3>Opções (JSON)</h3>
+          <textarea
+            [(ngModel)]="demoOptionsJson"
+            rows="6"
+            class="json-editor"
+          ></textarea>
+        </div> -->
+
+        <div class="current-state">
+          <p>
+            <strong>Valor Selecionado:</strong>
+            <code>{{ demoValue | json }}</code>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exemplos de Uso -->
+  <section class="doc-section">
+    <h2>Exemplos de Uso</h2>
+
+    <!-- Uso Básico -->
+    <div class="example-block">
+      <h3>Uso Básico (ngModel)</h3>
+      <p>Binding bidirecional simples usando <code>[(ngModel)]</code>.</p>
+
+      <div class="code-block">
+        <pre>{{ basicUsageCode }}</pre>
+      </div>
+    </div>
+
+    <!-- Interface -->
+    <div class="example-block">
+      <h3>Interface de Entrada e Opções Desabilitadas</h3>
+      <p>
+        As opções devem seguir a interface <code>SelectOption</code>. É possível desabilitar itens individuais usando a propriedade <code>disabled: true</code>.
+      </p>
+
+      <div class="code-block">
+        <pre>{{ optionsInterfaceCode }}</pre>
+      </div>
+    </div>
+
+    <!-- Reactive Forms -->
+    <div class="example-block">
+      <h3>Reactive Forms & Validação</h3>
+      <p>Integração com <code>FormGroup</code> e exibição de erro visual.</p>
+
+      <div class="example-preview">
+        <form [formGroup]="form" class="form-example">
+          <ui-select
+            [options]="frameworkOptions"
+            formControlName="framework"
+            placeholder="Selecione um framework"
+
+            [required]="!!(form.get('framework')?.invalid && form.get('framework')?.touched)"
+            >
+          </ui-select>
+
+          <ui-select
+            label="Versão (Desabilitado no Form)"
+            [options]="versionOptions"
+            formControlName="version"
+          >
+          </ui-select>
+
+          <div class="form-actions">
+            <button (click)="form.reset()">Limpar</button>
+            <p>Form Válido: {{ form.valid }}</p>
+            <p>Valor: {{ form.value | json }}</p>
+          </div>
+        </form>
+      </div>
+
+      <div class="code-block">
+        <pre>{{ reactiveFormCode }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Reference -->
+  <section class="doc-section">
+    <h2>API Reference</h2>
+
+    <table class="api-table">
+      <thead>
+        <tr>
+          <th>Propriedade</th>
+          <th>Tipo</th>
+          <th>Padrão</th>
+          <th>Descrição</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>[options]</code></td>
+          <td><code>SelectOption[]</code></td>
+          <td><code>[]</code></td>
+          <td>Lista de opções disponíveis para seleção.</td>
+        </tr>
+        <tr>
+          <td><code>[label]</code></td>
+          <td><code>string</code></td>
+          <td><code>''</code></td>
+          <td>Texto do rótulo exibido acima do componente.</td>
+        </tr>
+        <tr>
+          <td><code>[placeholder]</code></td>
+          <td><code>string</code></td>
+          <td><code>'Selecione...'</code></td>
+          <td>Texto exibido quando nenhum valor está selecionado.</td>
+        </tr>
+        <tr>
+          <td><code>[disabled]</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Desabilita a interação com o componente.</td>
+        </tr>
+        <tr>
+          <td><code>[error]</code></td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Aplica estilos visuais de erro (borda vermelha).</td>
+        </tr>
+        <tr>
+          <td><code>(change)</code></td>
+          <td><code>EventEmitter&lt;any&gt;</code></td>
+          <td><code>-</code></td>
+          <td>Evento emitido quando o valor selecionado muda.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

@@ -7,7 +7,7 @@ import { SwitchComponent } from './switch.component';
 @Component({
   standalone: true,
   imports: [SwitchComponent, ReactiveFormsModule],
-  template: ` <ui-switch [formControl]="control" label="Test Switch" /> `,
+  template: `<ui-switch [formControl]="control" label="Test Switch" />`,
 })
 class TestHostComponent {
   control = new FormControl(false);
@@ -27,141 +27,125 @@ describe('SwitchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('cria o componente sem erros', () => {
+  it('renderiza o switch corretamente', () => {
     expect(component).toBeTruthy();
   });
 
-  it('inicia desmarcado e reflete isso no input', () => {
-    const input = fixture.debugElement.query(By.css('input')).nativeElement;
+  it('começa desligado por padrão', () => {
+    const button = fixture.debugElement.query(
+      By.css('button[role="switch"]')
+    ).nativeElement;
 
     expect(component.value).toBeFalse();
-    expect(input.checked).toBeFalse();
+    expect(button.getAttribute('aria-checked')).toBe('false');
   });
 
-  it('altera o valor ao interagir com o switch', () => {
-    const input = fixture.debugElement.query(By.css('input'));
-    const event = { stopPropagation: jasmine.createSpy() };
+  it('liga o switch quando o usuário clica', () => {
+    const button = fixture.debugElement.query(By.css('button[role="switch"]'));
 
-    input.triggerEventHandler('change', event);
+    button.triggerEventHandler('click', new MouseEvent('click'));
     fixture.detectChanges();
 
     expect(component.value).toBeTrue();
-    expect(event.stopPropagation).toHaveBeenCalled();
   });
 
-  it('não muda o estado quando está desabilitado', () => {
-    component.disabled = true;
 
-    fixture.debugElement
-      .query(By.css('input'))
-      .triggerEventHandler('change', { stopPropagation: jasmine.createSpy() });
-
-    fixture.detectChanges();
-    expect(component.value).toBeFalse();
-  });
-
-  it('renderiza o label apenas quando informado', () => {
+  it('mostra o texto do label quando informado', () => {
     component.label = 'Meu Switch';
     fixture.detectChanges();
 
     const label = fixture.debugElement.query(By.css('.ui-switch-label'));
-    expect(label).toBeTruthy();
-    expect(label.nativeElement.textContent.trim()).toBe('Meu Switch');
+    expect(label?.nativeElement.textContent.trim()).toBe('Meu Switch');
   });
 
-  it('mantém aria-checked sincronizado com o valor interno', () => {
-    const input = fixture.debugElement.query(By.css('input'));
+  it('atualiza o aria-checked ao mudar o estado', () => {
+    const button = fixture.debugElement.query(
+      By.css('button[role="switch"]')
+    ).nativeElement;
 
-    expect(input.attributes['aria-checked']).toBe('false');
-
-    component.handleToggle(new Event('change'));
+    component.writeValue(true);
     fixture.detectChanges();
 
-    expect(input.attributes['aria-checked']).toBe('true');
+    expect(button.getAttribute('aria-checked')).toBe('true');
   });
 
-  it('funciona corretamente com formulários reativos', () => {
+  it('integra corretamente com FormControl', () => {
     const hostFixture = TestBed.createComponent(TestHostComponent);
     hostFixture.detectChanges();
 
-    const switchInstance = hostFixture.debugElement.query(
+    const instance = hostFixture.debugElement.query(
       By.directive(SwitchComponent)
     ).componentInstance as SwitchComponent;
 
-    expect(switchInstance.value).toBeFalse();
+    expect(instance.value).toBeFalse();
 
     hostFixture.componentInstance.control.setValue(true);
     hostFixture.detectChanges();
 
-    expect(switchInstance.value).toBeTrue();
+    expect(instance.value).toBeTrue();
   });
 
-  it('deve exibir spinner quando loading for true', () => {
+  it('exibe o spinner quando está em loading', () => {
     component.loading = true;
     fixture.detectChanges();
 
-    const spinner = fixture.debugElement.query(By.css('.ui-switch-spinner'));
-    const icon = fixture.debugElement.query(By.css('.ui-switch-icon'));
+    expect(
+      fixture.debugElement.query(By.css('.ui-switch-spinner'))
+    ).toBeTruthy();
 
-    expect(spinner).toBeTruthy();
-    expect(icon).toBeFalsy();
+    expect(
+      fixture.debugElement.query(By.css('.ui-switch-icon'))
+    ).toBeFalsy();
   });
 
-  it('deve chamar onTouched ao perder o foco', () => {
-    const spyOnTouched = spyOn<any>(component, 'onTouched');
+  it('marca como tocado ao perder o foco', () => {
+    const touchedSpy = spyOn<any>(component, 'onTouched');
 
-    const input = fixture.debugElement.query(By.css('input'));
-    input.triggerEventHandler('blur', null);
+    fixture.debugElement
+      .query(By.css('button[role="switch"]'))
+      .triggerEventHandler('blur', null);
 
-    expect(spyOnTouched).toHaveBeenCalled();
+    expect(touchedSpy).toHaveBeenCalled();
   });
 
-  it('deve desabilitar o switch quando o FormControl for desabilitado', () => {
+  it('reflete o disabled do FormControl no botão', () => {
     const hostFixture = TestBed.createComponent(TestHostComponent);
     hostFixture.detectChanges();
 
-    const switchDebug = hostFixture.debugElement.query(
-      By.directive(SwitchComponent)
-    );
-    const input = switchDebug.query(By.css('input')).nativeElement;
+    const button = hostFixture.debugElement.query(
+      By.css('button[role="switch"]')
+    ).nativeElement;
 
     hostFixture.componentInstance.control.disable();
     hostFixture.detectChanges();
 
-    expect(input.disabled).toBeTrue();
+    expect(button.disabled).toBeTrue();
   });
 
-  it('deve emitir o evento change ao alternar o switch', () => {
+  it('emite o evento change ao alternar', () => {
     spyOn(component.change, 'emit');
 
-    const input = fixture.debugElement.query(By.css('input'));
-    input.triggerEventHandler('change', { stopPropagation: () => {} });
+    fixture.debugElement
+      .query(By.css('button[role="switch"]'))
+      .triggerEventHandler('click', new MouseEvent('click'));
 
     expect(component.change.emit).toHaveBeenCalledWith(true);
   });
 
-  it('deve atualizar o valor ao chamar writeValue', () => {
-    component.writeValue(true);
-    fixture.detectChanges();
-
-    const input = fixture.debugElement.query(By.css('input')).nativeElement;
-
-    expect(component.value).toBeTrue();
-    expect(input.checked).toBeTrue();
-  });
-
-  it('não deve quebrar ao receber null no writeValue', () => {
+  it('aceita writeValue mesmo com valor inesperado', () => {
     expect(() => component.writeValue(null as any)).not.toThrow();
   });
 
-  it('deve refletir o estado disabled no atributo aria-disabled', () => {
+  it('expõe corretamente o estado disabled via aria', () => {
     component.disabled = true;
     fixture.detectChanges();
 
-    const input = fixture.debugElement.query(By.css('input')).nativeElement;
+    const button = fixture.debugElement.query(
+      By.css('button[role="switch"]')
+    ).nativeElement;
 
     expect(
-      input.getAttribute('aria-disabled') === 'true' || input.disabled
+      button.getAttribute('aria-disabled') === 'true' || button.disabled
     ).toBeTrue();
   });
 });

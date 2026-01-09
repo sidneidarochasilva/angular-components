@@ -1,47 +1,52 @@
-<label class="ui-switch" [class.ui-switch-disabled]="disabled" [class.ui-switch-loading]="loading" [attr.aria-busy]="loading" [attr.for]="id">
-  <input
-    type="checkbox"
+<label
+  class="ui-switch"
+  [class.ui-switch-disabled]="disabled"
+  [class.ui-switch-loading]="loading"
+  [attr.aria-busy]="loading"
+  [attr.for]="id"
+>
+  <button
+    type="button"
     class="ui-switch-input"
-    [id]="id"
-    [checked]="value"
-    [disabled]="disabled"
     role="switch"
     [attr.aria-checked]="value"
-    (change)="handleToggle($event)"
+    [attr.aria-disabled]="disabled"
+    [disabled]="disabled"
+    (click)="handleToggle($event)"
     (blur)="markAsTouched()"
-  />
-
-  <span class="ui-switch-track">
-    <span class="ui-switch-key">
-      @if (loading) {
-      <svg
-        viewBox="0 0 24 24"
-        class="ui-switch-spinner"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle
-          cx="12"
-          cy="12"
-          r="10"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="4"
-          stroke-dasharray="32"
-          stroke-dashoffset="32"
-          stroke-linecap="round"
-        />
-      </svg>
-      } @else {
-      <svg viewBox="0 0 24 24" class="ui-switch-icon" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M9 16.2L4.8 12L3.4 13.4L9 19L21 7L19.6 5.6L9 16.2Z"
-        />
-      </svg>
-      }
+  >
+    <span class="ui-switch-track">
+      <span class="ui-switch-key">
+        @if (loading) {
+        <svg
+          viewBox="0 0 24 24"
+          class="ui-switch-spinner"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-dasharray="32"
+            stroke-dashoffset="32"
+            stroke-linecap="round"
+          />
+        </svg>
+        } @else {
+        <svg viewBox="0 0 24 24" class="ui-switch-icon" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M9 16.2L4.8 12L3.4 13.4L9 19L21 7L19.6 5.6L9 16.2Z"
+          />
+        </svg>
+        }
+      </span>
     </span>
-  </span>
+  </button>
 
   @if (label) {
   <span class="ui-switch-label">

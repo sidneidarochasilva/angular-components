@@ -1,11 +1,6 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-} from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SelectComponent, SelectOption } from './select.component';
 
@@ -14,18 +9,19 @@ import { SelectComponent, SelectOption } from './select.component';
   imports: [SelectComponent, ReactiveFormsModule],
   template: `
     <ui-select
+      label="Seleção"
+      placeholder="Escolha uma opção"
+      [options]="options"
+      [required]="true"
       [formControl]="control"
-      [options]="mockOptions"
-      label="Test Select"
-      placeholder="Select an item"
     />
   `,
 })
 class TestHostComponent {
-  control = new FormControl(null);
-  mockOptions: SelectOption[] = [
-    { value: '1', label: 'Option 1' },
-    { value: '2', label: 'Option 2' },
+  control = new FormControl<string | null>(null);
+  options: SelectOption[] = [
+    { value: '1', label: 'Opção 1' },
+    { value: '2', label: 'Opção 2' },
   ];
 }
 
@@ -33,205 +29,168 @@ describe('SelectComponent', () => {
   let fixture: ComponentFixture<SelectComponent>;
   let component: SelectComponent;
 
-  const mockOptions: SelectOption[] = [
+  const optionsBase: SelectOption[] = [
     { value: 'val1', label: 'Texto 1' },
     { value: 'val2', label: 'Texto 2' },
+    { value: 'val3', label: 'Texto 3 (desabilitado)', disabled: true },
   ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectComponent],
+      imports: [SelectComponent, ReactiveFormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SelectComponent);
     component = fixture.componentInstance;
-    component.options = mockOptions;
+    component.options = optionsBase;
+    component.label = 'Rótulo do Select';
+    component.placeholder = 'Selecione uma opção';
     fixture.detectChanges();
   });
 
-  it('deve criar o componente', () => {
+  it('cria o componente', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deve exibir o placeholder quando nenhum valor estiver selecionado', () => {
-    const valueEl = fixture.debugElement.query(
-      By.css('.ui-select-value')
-    ).nativeElement;
-    expect(valueEl.textContent.trim()).toBe('Selecione uma opção');
+  it('renderiza o label quando informado', () => {
+    const labelEl = fixture.debugElement.query(By.css('.ui-select-label'));
+    expect(labelEl).toBeTruthy();
+    expect(labelEl.nativeElement.textContent).toContain('Rótulo do Select');
   });
 
-  it('deve abrir o dropdown ao clicar na select box', () => {
-    const selectBox = fixture.debugElement.query(By.css('.ui-select-box'));
-    selectBox.nativeElement.click();
-    fixture.detectChanges();
+  it('mostra o placeholder como primeira opção desabilitada', () => {
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
 
-    const optionsList = fixture.debugElement.query(
-      By.css('.ui-select-options')
+    expect(selectEl.options.length).toBeGreaterThan(0);
+    expect(selectEl.options[0].value).toBe('');
+    expect(selectEl.options[0].disabled).toBeTrue();
+    expect(selectEl.options[0].textContent?.trim()).toBe('Selecione uma opção');
+  });
+
+  it('mantém value como null quando nada foi escolhido', () => {
+    expect(component.value).toBeNull();
+  });
+
+  it('renderiza as opções e respeita itens desabilitados', () => {
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
+
+    const values = Array.from(selectEl.options).map((o) => o.value);
+    expect(values).toContain('val1');
+    expect(values).toContain('val2');
+    expect(values).toContain('val3');
+
+    const disabledOption = Array.from(selectEl.options).find(
+      (o) => o.value === 'val3'
     );
-    expect(optionsList).toBeTruthy();
-    expect(component.isOpen).toBeTrue();
+    expect(disabledOption).toBeTruthy();
+    expect(disabledOption?.disabled).toBeTrue();
   });
 
-  it('deve selecionar uma opção e fechar o dropdown ao clicar nela', () => {
+  it('atualiza o valor interno e emite evento quando o usuário seleciona', () => {
     spyOn(component.change, 'emit');
 
-    // Abre dropdown
-    component.toggleDropdown();
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
+
+    selectEl.value = 'val2';
+    selectEl.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
-    // Clica na primeira opção
-    const firstOption = fixture.debugElement.query(By.css('.ui-select-option'));
-    firstOption.nativeElement.click();
-    fixture.detectChanges();
-
-    expect(component.value).toBe('val1');
-    expect(component.selectedLabel).toBe('Texto 1');
-    expect(component.isOpen).toBeFalse();
-    expect(component.change.emit).toHaveBeenCalledWith('val1');
+    expect(component.value).toBe('val2');
+    expect(component.change.emit).toHaveBeenCalledWith('val2');
   });
 
-  it('não deve abrir o dropdown se estiver desabilitado', () => {
+  it('marca como tocado ao perder o foco', () => {
+    const touchedSpy = jasmine.createSpy('touched');
+    component.registerOnTouched(touchedSpy);
+    fixture.detectChanges();
+
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
+
+    selectEl.dispatchEvent(new Event('blur'));
+    expect(touchedSpy).toHaveBeenCalled();
+  });
+
+  it('desabilita o select nativo quando [disabled] é true', () => {
     component.disabled = true;
     fixture.detectChanges();
 
-    const selectBox = fixture.debugElement.query(By.css('.ui-select-box'));
-    selectBox.nativeElement.click();
-    fixture.detectChanges();
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
 
-    expect(component.isOpen).toBeFalse();
+    expect(selectEl.disabled).toBeTrue();
   });
 
-  describe('Navegação por teclado', () => {
-
-    it('deve abrir o dropdown ao pressionar Enter', () => {
-      const event = new KeyboardEvent('keydown', { key: 'Enter' });
-      fixture.nativeElement.dispatchEvent(event);
-      fixture.detectChanges();
-      expect(component.isOpen).toBeTrue();
-    });
-
-    it('deve abrir o dropdown ao pressionar Space', () => {
-      const event = new KeyboardEvent('keydown', { key: ' ' });
-      fixture.nativeElement.dispatchEvent(event);
-      fixture.detectChanges();
-      expect(component.isOpen).toBeTrue();
-    });
-
-    it('deve fechar o dropdown ao pressionar Escape', () => {
-      component.isOpen = true;
-      fixture.detectChanges();
-
-      const event = new KeyboardEvent('keydown', { key: 'Escape' });
-      fixture.nativeElement.dispatchEvent(event);
-      fixture.detectChanges();
-      expect(component.isOpen).toBeFalse();
-    });
-
-    it('deve navegar entre as opções com as setas', () => {
-      component.isOpen = true;
-      fixture.detectChanges();
-
-      // Seta para baixo -> índice 0
-      fixture.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
-      expect(component.focusedIndex).toBe(0);
-
-      // Seta para baixo -> índice 1
-      fixture.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
-      expect(component.focusedIndex).toBe(1);
-
-      // Seta para cima -> índice 0
-      fixture.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
-      expect(component.focusedIndex).toBe(0);
-    });
-
-    it('deve selecionar a opção focada ao pressionar Enter', () => {
-      component.isOpen = true;
-      component.focusedIndex = 1; // Foca na segunda opção ('val2')
-      fixture.detectChanges();
-
-      spyOn(component.change, 'emit');
-
-      fixture.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
-      fixture.detectChanges();
-
-      expect(component.value).toBe('val2');
-      expect(component.isOpen).toBeFalse();
-      expect(component.change.emit).toHaveBeenCalledWith('val2');
-    });
-  });
-
-  it('deve fechar o dropdown ao clicar fora do componente', () => {
-    component.isOpen = true;
+  it('aplica classe de erro no wrapper quando [error] é true', () => {
+    component.error = true;
     fixture.detectChanges();
 
-    // Simula clique no body
-    document.dispatchEvent(new MouseEvent('click'));
-    fixture.detectChanges();
-
-    expect(component.isOpen).toBeFalse();
+    const box = fixture.debugElement.query(By.css('.ui-select-box'))
+      .nativeElement as HTMLElement;
+    expect(box.classList).toContain('ui-select-error');
   });
 
-  // --- Testes de Integração com Reactive Forms ---
+  it('expõe atributos ARIA básicos coerentes', () => {
+
+    component.error = true;
+    fixture.detectChanges();
+
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
+
+    expect(selectEl.getAttribute('aria-invalid')).toBe('true');
+    expect(selectEl.getAttribute('aria-labelledby')).toContain('ui-select-');
+  });
 
   describe('Integração com Reactive Forms', () => {
     let hostFixture: ComponentFixture<TestHostComponent>;
-    let hostComponent: TestHostComponent;
 
     beforeEach(() => {
       hostFixture = TestBed.createComponent(TestHostComponent);
-      hostComponent = hostFixture.componentInstance;
       hostFixture.detectChanges();
     });
 
-    it('deve atualizar o valor do componente quando o FormControl mudar (writeValue)', () => {
-      hostComponent.control.setValue('2' as any);
+    it('reflete o valor do FormControl no componente', () => {
+      hostFixture.componentInstance.control.setValue('2');
       hostFixture.detectChanges();
 
-      const selectComponent = hostFixture.debugElement.query(
+      const selectCmp = hostFixture.debugElement.query(
         By.directive(SelectComponent)
-      ).componentInstance;
-      expect(selectComponent.value).toBe('2');
-      expect(selectComponent.selectedLabel).toBe('Option 2');
+      ).componentInstance as SelectComponent;
+
+      expect(selectCmp.value).toBe('2');
     });
 
-    it('deve atualizar o FormControl quando uma opção for selecionada', () => {
-      const selectComponentDebug = hostFixture.debugElement.query(
-        By.directive(SelectComponent)
-      );
-      const selectComponent = selectComponentDebug.componentInstance;
+    it('propaga a seleção do usuário para o FormControl', () => {
+      const selectEl = hostFixture.debugElement.query(
+        By.css('select.ui-select-native')
+      ).nativeElement as HTMLSelectElement;
 
-      // Abre e seleciona via método interno para simplificar
-      selectComponent.selectOption(hostComponent.mockOptions[0]);
+      selectEl.value = '1';
+      selectEl.dispatchEvent(new Event('change'));
       hostFixture.detectChanges();
 
-      expect(hostComponent.control.value).toBe('1' as any);
+      expect(hostFixture.componentInstance.control.value).toBe('1');
     });
 
-    it('deve refletir o estado desabilitado do FormControl', () => {
-      hostComponent.control.disable();
+    it('respeita o disabled vindo do FormControl', () => {
+      hostFixture.componentInstance.control.disable();
       hostFixture.detectChanges();
 
-      const selectContainer = hostFixture.debugElement.query(
-        By.css('.ui-select-container')
-      );
-      expect(
-        selectContainer.nativeElement.classList.contains('ui-select-disabled')
-      ).toBeTrue();
+      const selectEl = hostFixture.debugElement.query(
+        By.css('select.ui-select-native')
+      ).nativeElement as HTMLSelectElement;
+
+      expect(selectEl.disabled).toBeTrue();
     });
-  });
-
-  // --- Testes de Acessibilidade (Handoff Requirements) ---
-
-  it('deve ter os atributos ARIA corretos', () => {
-    const selectBox = fixture.debugElement.query(
-      By.css('.ui-select-box')
-    ).nativeElement;
-
-    expect(selectBox.getAttribute('role')).toBe('combobox');
-    expect(selectBox.getAttribute('aria-expanded')).toBe('false');
-
-    component.toggleDropdown();
-    fixture.detectChanges();
-    expect(selectBox.getAttribute('aria-expanded')).toBe('true');
   });
 });

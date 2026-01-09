@@ -1,1 +1,310 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Documentation Styles */
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-default);
+  color: var(--text-primary);
+}
+
+.doc-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Header */
+.doc-header {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 1.5rem;
+}
+
+.doc-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.doc-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 600px;
+}
+
+/* Sections */
+.doc-section {
+  margin-bottom: 4rem;
+}
+
+.doc-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+/* Demo Card (Interactive Playground) */
+.demo-card {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  /* Border separation */
+  background: var(--bg-paper);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.demo-preview {
+  padding: 3rem;
+  background: var(--bg-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+}
+
+.demo-controls {
+  padding: 1.5rem;
+  background: var(--bg-paper);
+  border-left: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.demo-controls h3 {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Form Controls in Demo */
+.control-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.control-group label.text-input {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.control-group input[type="text"],
+.json-editor {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  background: var(--bg-default);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+}
+
+.control-group input[type="text"]:focus,
+.json-editor:focus {
+  outline: none;
+  border-color: var(--action-primary-enabled);
+  box-shadow: 0 0 0 2px var(--action-primary-subtle);
+}
+
+.json-editor {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  min-height: 150px;
+  resize: vertical;
+}
+
+.current-state {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-default);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.current-state code {
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: var(--bg-default);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: 'Fira Code', monospace;
+  word-break: break-all;
+}
+
+/* Example Blocks */
+.example-block {
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-paper);
+}
+
+.example-block h3 {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-default);
+  /* Header bg */
+  border-bottom: 1px solid var(--border-default);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.example-block>p {
+  padding: 1rem 1.5rem;
+  margin: 0;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-default);
+  font-size: 0.875rem;
+}
+
+.example-preview {
+  padding: 2.5rem;
+  background: var(--bg-paper);
+  display: flex;
+  justify-content: center;
+  /* border-bottom: 1px solid var(--border-default); - Removed to merge with code block if needed, but keeping for separation */
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* Code Blocks */
+.code-block {
+  background: #1e1e1e;
+  /* Dark theme for code */
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  margin: 0;
+  color: #d4d4d4;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* API Table */
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  background: var(--bg-paper);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+  /* For border radius */
+}
+
+.api-table thead {
+  background: var(--bg-default);
+}
+
+.api-table th,
+.api-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.api-table th {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.api-table td {
+  color: var(--text-secondary);
+}
+
+.api-table tr:last-child td {
+  border-bottom: none;
+}
+
+.api-table code {
+  background: var(--action-primary-subtle);
+  color: var(--text-brand);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+}
+
+/* Form Actions in Examples */
+.form-example {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-actions {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border-default);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.form-actions button {
+  background: var(--bg-default);
+  border: 1px solid var(--border-default);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.form-actions button:hover {
+  background: var(--bg-disabled);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .demo-card {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-controls {
+    border-left: none;
+    border-top: 1px solid var(--border-default);
+  }
+
+  .doc-header h1 {
+    font-size: 2rem;
+  }
+
+  .example-preview {
+    padding: 1.5rem;
+  }
+}
