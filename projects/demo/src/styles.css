@@ -289,6 +289,30 @@ body {
   background: var(--bg-disabled);
 }
 
+.doc-nav {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: end;
+}
+
+.doc-nav a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.doc-nav a:hover {
+  background: var(--bg-disabled);
+}
+
+.doc-nav a.router-link-active {
+  background: var(--action-primary-enabled);
+  color: var(--text-on-primary);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .demo-card {
