@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Clona o repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Configura o Node com cache de dependências
+      - name: Setup do Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Instalar dependências
+        run: npm ci
+
+      # Executa os testes da lib
+      - name: Rodar testes
+        run: npx ng test ui --watch=false --browsers=ChromeHeadless
+
+      # Gera o build da demo para o GitHub Pages
+      - name: Build da demo
+        run: npm run build:demo:gh
+
+      - name: Deploy no GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist/demo
+          branch: gh-pages
