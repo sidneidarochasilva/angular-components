@@ -13,15 +13,13 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  # Job 1: Validação e Testes (Roda em PRs e na Main)
+  quality-check:
     runs-on: ubuntu-latest
-
     steps:
-      # Clona o repositório
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      # Configura o Node com cache de dependências
       - name: Setup do Node.js
         uses: actions/setup-node@v4
         with:
@@ -31,17 +29,41 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      # Executa os testes da lib
-      - name: Rodar testes
+      - name: Rodar testes da UI
         run: npx ng test ui --watch=false --browsers=ChromeHeadlessNoSandbox
 
-      # Gera o build da demo para o GitHub Pages
-      - name: Build da demo
+      - name: Verificar Build da Demo
         run: npm run build:demo:gh
 
-      - name: Deploy no GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  # Job 2: Deploy (Só roda na Main e após sucesso do quality-check)
+  deploy:
+    needs: quality-check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    # Define o ambiente para permitir regras de proteção (Aprovação Manual)
+    environment:
+      name: github-pages
+      url: https://sidneidarochasilva.github.io/angular-components/
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup do Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build Final da Demo
+        run: npm run build:demo:gh
+
+      - name: Publicar no GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist/demo
+          folder: dist/demo/browser
           branch: gh-pages
