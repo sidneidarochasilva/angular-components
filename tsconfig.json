@@ -19,7 +19,7 @@
     "module": "ES2022",
     "paths": {
       "ui": [
-        "./dist/ui"
+        "./projects/ui/src/public-api.ts"
       ]
     }
   },
