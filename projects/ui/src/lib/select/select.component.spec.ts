@@ -105,6 +105,22 @@ describe('SelectComponent', () => {
     expect(component.change.emit).toHaveBeenCalledWith('val2');
   });
 
+  it('converte valor vazio para null', () => {
+    spyOn(component.change, 'emit');
+
+    const selectEl = fixture.debugElement.query(
+      By.css('select.ui-select-native')
+    ).nativeElement as HTMLSelectElement;
+
+    // Simula selecionar o placeholder ou valor vazio
+    selectEl.value = '';
+    selectEl.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    expect(component.value).toBeNull();
+    expect(component.change.emit).toHaveBeenCalledWith(null);
+  });
+
   it('marca como tocado ao perder o foco', () => {
     const touchedSpy = jasmine.createSpy('touched');
     component.registerOnTouched(touchedSpy);

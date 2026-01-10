@@ -49,6 +49,17 @@ describe('SwitchComponent', () => {
     expect(component.value).toBeTrue();
   });
 
+  it('não muda o estado quando está desabilitado', () => {
+    component.disabled = true;
+    fixture.detectChanges();
+
+    const button = fixture.debugElement.query(By.css('button[role="switch"]'));
+    button.triggerEventHandler('click', new MouseEvent('click'));
+    fixture.detectChanges();
+
+    expect(component.value).toBeFalse();
+  });
+
 
   it('mostra o texto do label quando informado', () => {
     component.label = 'Meu Switch';
