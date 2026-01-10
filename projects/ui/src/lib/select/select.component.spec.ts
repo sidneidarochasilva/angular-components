@@ -121,6 +121,22 @@ describe('SelectComponent', () => {
     expect(component.change.emit).toHaveBeenCalledWith(null);
   });
 
+  it('deve executar a função onChange padrão sem erros', () => {
+
+    const comp = new SelectComponent();
+
+    // Não deve lançar erro ao tentar chamar a função vazia padrão
+    expect(() => {
+        const mockEvent = { target: { value: 'test' } } as unknown as Event;
+        comp.onSelectChange(mockEvent);
+    }).not.toThrow();
+  });
+
+  it('deve executar a função onTouched padrão sem erros', () => {
+    const comp = new SelectComponent();
+    expect(() => comp.markAsTouched()).not.toThrow();
+  });
+
   it('marca como tocado ao perder o foco', () => {
     const touchedSpy = jasmine.createSpy('touched');
     component.registerOnTouched(touchedSpy);

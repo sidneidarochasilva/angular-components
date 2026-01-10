@@ -60,6 +60,20 @@ describe('SwitchComponent', () => {
     expect(component.value).toBeFalse();
   });
 
+  it('deve executar callbacks padrão sem erros antes do registro', () => {
+    const comp = new SwitchComponent();
+
+    // Testa onChange padrão
+    expect(() => {
+
+        const mockEvent = { stopPropagation: () => {} } as unknown as Event;
+        comp.handleToggle(mockEvent);
+    }).not.toThrow();
+
+    // Testa onTouched padrão
+    expect(() => comp.markAsTouched()).not.toThrow();
+  });
+
 
   it('mostra o texto do label quando informado', () => {
     component.label = 'Meu Switch';
