@@ -331,4 +331,22 @@ body {
   .example-preview {
     padding: 1.5rem;
   }
+
+  /* Responsive Tables */
+  .api-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1.5rem;
+  }
+
+  .api-table {
+    min-width: 600px;
+    border: none;
+  }
+
+  .api-table th,
+  .api-table td {
+    white-space: normal;
+    min-width: 120px;
+  }
 }

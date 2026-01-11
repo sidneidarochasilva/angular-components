@@ -138,57 +138,74 @@
     </div>
   </section>
 
-  <!-- API Reference -->
+  <!-- API -->
   <section class="doc-section">
-    <h2>API Reference</h2>
+    <h2>API</h2>
 
-    <table class="api-table">
-      <thead>
-        <tr>
-          <th>Propriedade</th>
-          <th>Tipo</th>
-          <th>Padrão</th>
-          <th>Descrição</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>[options]</code></td>
-          <td><code>SelectOption[]</code></td>
-          <td><code>[]</code></td>
-          <td>Lista de opções disponíveis para seleção.</td>
-        </tr>
-        <tr>
-          <td><code>[label]</code></td>
-          <td><code>string</code></td>
-          <td><code>''</code></td>
-          <td>Texto do rótulo exibido acima do componente.</td>
-        </tr>
-        <tr>
-          <td><code>[placeholder]</code></td>
-          <td><code>string</code></td>
-          <td><code>'Selecione...'</code></td>
-          <td>Texto exibido quando nenhum valor está selecionado.</td>
-        </tr>
-        <tr>
-          <td><code>[disabled]</code></td>
-          <td><code>boolean</code></td>
-          <td><code>false</code></td>
-          <td>Desabilita a interação com o componente.</td>
-        </tr>
-        <tr>
-          <td><code>[error]</code></td>
-          <td><code>boolean</code></td>
-          <td><code>false</code></td>
-          <td>Aplica estilos visuais de erro (borda vermelha).</td>
-        </tr>
-        <tr>
-          <td><code>(change)</code></td>
-          <td><code>EventEmitter&lt;any&gt;</code></td>
-          <td><code>-</code></td>
-          <td>Evento emitido quando o valor selecionado muda.</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="api-table-wrapper">
+      <h3>Inputs</h3>
+
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Padrão</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>options</code></td>
+            <td><code>SelectOption[]</code></td>
+            <td><code>[]</code></td>
+            <td>Lista de opções disponíveis para seleção.</td>
+          </tr>
+          <tr>
+            <td><code>label</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>Texto do rótulo exibido acima do componente.</td>
+          </tr>
+          <tr>
+            <td><code>placeholder</code></td>
+            <td><code>string</code></td>
+            <td><code>'Selecione...'</code></td>
+            <td>Texto exibido quando nenhum valor está selecionado.</td>
+          </tr>
+          <tr>
+            <td><code>disabled</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Desabilita a interação com o componente.</td>
+          </tr>
+          <tr>
+            <td><code>error</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Aplica estilos visuais de erro (borda vermelha).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="api-table-wrapper">
+      <h3>Outputs</h3>
+
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th>Quando dispara</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>change</code></td>
+            <td>Sempre que o valor selecionado muda.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </div>
