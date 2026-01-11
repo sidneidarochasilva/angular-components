@@ -57,6 +57,9 @@ jobs:
       - name: Build Final da Demo
         run: npm run build:demo:gh
 
+      - name: Criar 404.html para SPA Routing
+        run: cp dist/demo/browser/index.html dist/demo/browser/404.html
+
       - name: Publicar no GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
